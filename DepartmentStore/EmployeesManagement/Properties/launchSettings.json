@@ -15,7 +15,9 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5288",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JwtSettings__Secret": "lkfkldshfkjdhfkjhdkjghjioertuoiretuvn,mv,ncxvc,mv",
+        "ConnectionStrings__EmployeesDBConnnection": "server=localhost;port=3306;user=gonzalo;password=12345abc;database=employees"
       }
     },
     "IIS Express": {

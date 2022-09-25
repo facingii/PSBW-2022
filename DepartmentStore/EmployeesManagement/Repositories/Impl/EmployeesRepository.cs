@@ -19,8 +19,8 @@ namespace EmployeesManagement.Repositories.Impl
 
         public IEnumerable<Employee> GetAll (int? index, int? take)
         {
-            var result = _context.Employees.
-                Skip (index.HasValue ? index.Value : 0)
+            var result = _context.Employees
+                .Skip (index.HasValue ? index.Value : 0)
                 .Take (take.HasValue ? take.Value : 100);
 
             return result;
@@ -66,9 +66,21 @@ namespace EmployeesManagement.Repositories.Impl
             }
         }
 
-        public bool Update(int empNo, Employee employee)
+        public bool Update (int empNo, Employee employee)
         {
-            throw new NotImplementedException ();
+            var tmpEmployee = _context.Employees.FirstOrDefault (e => e.EmpNo == empNo);
+            if (tmpEmployee == null) return false;
+
+            tmpEmployee.FirstName = employee.FirstName;
+            tmpEmployee.LastName = employee.LastName;
+            tmpEmployee.BirthDate = employee.BirthDate;
+            tmpEmployee.Gender = employee.Gender;
+            tmpEmployee.HireDate = employee.HireDate;
+            
+            _context.Employees.Update (tmpEmployee);
+            _context.SaveChanges ();
+
+            return true;
         }
 
         public bool Delete (int empNo)
@@ -76,7 +88,7 @@ namespace EmployeesManagement.Repositories.Impl
             var entity = _context.Employees.FirstOrDefault (e => e.EmpNo == empNo);
             if (entity == null) return false;
 
-            _context.Remove (entity);
+            _context.Employees.Remove (entity);
             _context.SaveChanges ();
 
             return true;

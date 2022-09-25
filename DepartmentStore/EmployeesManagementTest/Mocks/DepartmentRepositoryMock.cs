@@ -1,10 +1,24 @@
 ﻿using System;
-namespace EmployeesManagementTest
+using EmployeesManagement.Models.entities;
+using EmployeesManagement.Repositories;
+
+namespace EmployeesManagementTest.Mocks
 {
-    public class EmployeesRepositoryMock
+    public class DepartmentRepositoryMock : IDepartmentRepository
     {
-        public EmployeesRepositoryMock()
+        public DepartmentRepositoryMock ()
         {
+        }
+
+        public IEnumerable<Department> GetAll ()
+        {
+            return new List<Department> {
+                new Department
+                {
+                    DeptName = "Development",
+                    DeptNo = "1024"
+                }
+            };
         }
     }
 }

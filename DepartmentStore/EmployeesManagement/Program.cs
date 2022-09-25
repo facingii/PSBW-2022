@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+configuration.AddEnvironmentVariables ();
 
 // Add services to the container.
 
