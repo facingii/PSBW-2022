@@ -4,11 +4,11 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      DeparmentStore/EmployeesManagement/*.csproj
+      'DeparmentStore/EmployeesManagement/*.csproj'
   pull_request:
     branches: [ "master" ]
     paths:
-      DeparmentStore/EmployeesManagement/*.csproj
+      'DeparmentStore/EmployeesManagement/*.csproj'
 
 jobs:
   build:
