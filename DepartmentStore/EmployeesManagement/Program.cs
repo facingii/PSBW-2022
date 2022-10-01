@@ -16,7 +16,7 @@ configuration.AddEnvironmentVariables ();
 // add DBContext
 builder.Services.AddDbContext<employeesContext>(options =>
 {
-    var connectionString = configuration.GetConnectionString ("EmployeesDBConnnection");
+    var connectionString = configuration.GetConnectionString ("EmployeesDBConnection");
     var version = ServerVersion.Parse ("8.0.26-mysql");
     options.UseMySql (connectionString, version);
 });
