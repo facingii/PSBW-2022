@@ -6,7 +6,6 @@ namespace UsersManagement.Models.dto
     public partial class User
     {
         [NotMapped]
-        [JsonIgnore]
         public string Token { get; set; }
     }
 }

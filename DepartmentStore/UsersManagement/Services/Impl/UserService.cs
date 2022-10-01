@@ -22,16 +22,16 @@ public class UsersService : IUsersService
     public User Authenticate (string username, string password)
     {
         var users = _usersRepository.GetAll ();
-        var user = users.SingleOrDefault(u => u.UserName == username && u.Password == password);
+        var user = users.SingleOrDefault (u => u.UserName == username && u.Password == password);
         if (user == null) return user;
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = System.Text.Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+        var tokenHandler = new JwtSecurityTokenHandler ();
+        var key = System.Text.Encoding.ASCII.GetBytes (_jwtSettings.Secret);
 
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        var tokenDescriptor = new SecurityTokenDescriptor ()
         {
-            Subject = new ClaimsIdentity(
-                new Claim[] {
+            Subject = new ClaimsIdentity ( 
+                new Claim [] {
                         new Claim (ClaimTypes.Name, user.UserName)
                 }
             ),
@@ -52,6 +52,7 @@ public class UsersService : IUsersService
         var users = _usersRepository.GetAll ();
         return users.Select (u => {
             u.Password = "";
+            u.Token = "";
             return u;
         });
     }
