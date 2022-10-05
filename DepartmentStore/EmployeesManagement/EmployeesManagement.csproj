@@ -15,6 +15,10 @@
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.MariaDB" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +33,11 @@
     <None Remove="Models\dto\" />
     <None Remove="Models\entities\" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Serilog" />
+    <None Remove="Serilog.Sinks.Console" />
+    <None Remove="Serilog.Extensions.Hosting" />
+    <None Remove="Serilog.Sinks.MySQL" />
+    <None Remove="Serilog.Sinks.MariaDB" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

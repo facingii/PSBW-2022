@@ -6,10 +6,25 @@ using EmployeesManagement.Services;
 using EmployeesManagement.Services.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MariaDB.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder (args); 
+
 var configuration = builder.Configuration;
 configuration.AddEnvironmentVariables ();
+
+//enable Serilog
+builder.Host.UseSerilog((ctx, lc) =>
+{
+    lc.WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information);
+    lc.WriteTo.MariaDB(connectionString: configuration.GetConnectionString("EmployeesDBConnection"),
+        tableName: "logs",
+        autoCreateTable: true,
+        useBulkInsert: false,
+        options: new Serilog.Sinks.MariaDB.MariaDBSinkOptions());
+});
 
 // Add services to the container.
 
@@ -29,7 +44,6 @@ builder.Services.AddScoped<IDeptEmpRepository, DeptEmpRepository>();
 
 builder.Services.AddControllers();
 
-#region auth
 // enable jwt
 var jwtSection = builder.Configuration.GetSection("JwtSettings");
 var jwtSettings = jwtSection.Get<JwtSettings>();
@@ -53,7 +67,6 @@ builder.Services.AddAuthentication (authOptions =>
         ValidateAudience = false
     };
 });
-#endregion
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

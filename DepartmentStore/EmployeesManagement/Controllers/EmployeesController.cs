@@ -21,7 +21,7 @@ namespace EmployeesManagement.Controllers
         [ProducesResponseType (StatusCodes.Status200OK, Type = typeof (IEnumerable<Employee>))]
         public IEnumerable<Employee> GetAllEmployees ()
         {
-            _logger.LogInformation ("Getting All Employees Info");
+            _logger.LogWarning ("Getting All Employees Info");
             var result = _employeesService.GetAll (0, 1000);
 
             return result;

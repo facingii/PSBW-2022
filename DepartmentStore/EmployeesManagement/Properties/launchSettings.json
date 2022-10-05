@@ -12,12 +12,12 @@
     "EmployeesManagement": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5288/",
+      "launchUrl": "/swagger",
+      "applicationUrl": "http://localhost:28341",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JwtSettings__Secret": "lkfkldshfkjdhfkjhdkjghjioertuoiretuvn,mv,ncxvc,mv",
-        "ConnectionStrings__EmployeesDBConnection": "server=localhost;port=3306;user=gonzalo;password=12345abc;database=employees"
+        "ConnectionStrings__EmployeesDBConnection": "server=localhost;port=3306;user=gonzalo;password=12345abc;database=employees",
+        "JwtSettings__secret": "lkfkldshfkjdhfkjhdkjghjioertuoiretuvn,mv,ncxvc,mv"
       }
     },
     "IIS Express": {
