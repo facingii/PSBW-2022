@@ -6,6 +6,7 @@ using EmployeesManagement.Services;
 using EmployeesManagement.Services.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MariaDB.Extensions;
@@ -14,6 +15,13 @@ var builder = WebApplication.CreateBuilder (args);
 
 var configuration = builder.Configuration;
 configuration.AddEnvironmentVariables ();
+
+// add policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy ("WritePermission", policy => policy.RequireClaim ("CanWrite", "true"));
+    options.AddPolicy ("ReadPermission", policy => policy.RequireClaim ("CanRead", "true"));
+});
 
 //enable Serilog
 builder.Host.UseSerilog((ctx, lc) =>
@@ -70,7 +78,19 @@ builder.Services.AddAuthentication (authOptions =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen (c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+});
 
 var app = builder.Build();
 

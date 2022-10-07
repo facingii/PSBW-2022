@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace UsersManagement.Models.dto
+namespace EmployeesManagement.Models.entities
 {
     public partial class User
     {
@@ -11,17 +10,10 @@ namespace UsersManagement.Models.dto
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-
-        [JsonIgnore]
         public bool? Canread { get; set; }
-
-        [JsonIgnore]
         public bool? Canwrite { get; set; }
-
-        [JsonIgnore]
         public int IdRole { get; set; }
 
-        [JsonIgnore]
         public virtual Role IdRoleNavigation { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using EmployeesManagement.Models.entities;
 using EmployeesManagement.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeesManagement.Controllers
@@ -10,28 +11,33 @@ namespace EmployeesManagement.Controllers
     {
         private readonly ILogger<EmployeesController> _logger;
         private readonly IEmployeesService _employeesService;
+        private readonly IConfiguration _configuration;
 
-        public EmployeesController (ILogger<EmployeesController> logger, IEmployeesService employeesService)
+        public EmployeesController (ILogger<EmployeesController> logger, IConfiguration configuration,
+            IEmployeesService employeesService)
         {
             _logger = logger;
             _employeesService = employeesService;
         }
 
+        [Authorize (Roles = "Administrator, Supervisor, Viewer")]
+        [Authorize (Policy = "ReadPermission")]
         [HttpGet]
         [ProducesResponseType (StatusCodes.Status200OK, Type = typeof (IEnumerable<Employee>))]
         public IEnumerable<Employee> GetAllEmployees ()
         {
-            _logger.LogWarning ("Getting All Employees Info");
+            _logger.LogWarning ($"Getting All Employees Info, Request by user: {HttpContext.User.Identity.Name}");
             var result = _employeesService.GetAll (0, 1000);
 
             return result;
         }
 
+        [Authorize (Roles = "Administrator, Supervisor, Viewer")]
         [HttpGet ("{empNo}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof (Employee))]
         public Employee GetEmployee (int empNo)
         {
-            _logger.LogInformation ($"Getting Info for Employee No = {empNo}" );
+            _logger.LogInformation ($"Getting Info for Employee No = {empNo}, User: {HttpContext.User.Identity.Name}" );
 
             var result = _employeesService.Get (empNo);
             if (result == null) return new Employee ();
@@ -39,6 +45,7 @@ namespace EmployeesManagement.Controllers
             return result;
         }
 
+        [Authorize (Roles = "Administrator, Supervisor")]
         [HttpGet ("assigned/{empNo}")]
         [ProducesResponseType (StatusCodes.Status200OK, Type = typeof (IEnumerable<Employee>))]
         public IEnumerable<Department> GetDepartmentAssigned (int empNo)
@@ -50,6 +57,7 @@ namespace EmployeesManagement.Controllers
         }
 
         [HttpPost]
+        [Authorize (Roles = "Administrator, Supervisor")]
         [ProducesResponseType (StatusCodes.Status200OK)]
         [ProducesResponseType (StatusCodes.Status400BadRequest)]
         [ProducesResponseType (StatusCodes.Status500InternalServerError)]
@@ -74,6 +82,7 @@ namespace EmployeesManagement.Controllers
             }
         }
 
+        [Authorize (Roles = "Administrator, Supervisor")]
         [HttpPut ("{empNo}")]
         [ProducesResponseType (StatusCodes.Status200OK)]
         [ProducesResponseType (StatusCodes.Status400BadRequest)]

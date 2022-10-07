@@ -1,12 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmployeesManagement.Models.entities
 {
     public partial class Salary
     {
         public int EmpNo { get; set; }
-
-        [JsonPropertyName ("salary")]
         public int Salary1 { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }

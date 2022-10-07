@@ -1,4 +1,7 @@
-﻿namespace EmployeesManagement.Models.entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace EmployeesManagement.Models.entities
 {
     public partial class DeptEmpLatestDate
     {

@@ -11,11 +11,13 @@ namespace UsersManagement.Services.Impl;
 public class UsersService : IUsersService
 {    
     private readonly IUsersRepository _usersRepository;
+    private readonly IRolesRepository _rolesRepository;
     private readonly JwtSettings _jwtSettings;
 
-    public UsersService (IOptions<JwtSettings> options, IUsersRepository usersRepository)
+    public UsersService (IOptions<JwtSettings> options, IUsersRepository usersRepository, IRolesRepository rolesRepository)
     {
         _usersRepository = usersRepository;
+        _rolesRepository = rolesRepository;
         _jwtSettings = options.Value;
     }
 
@@ -25,6 +27,9 @@ public class UsersService : IUsersService
         var user = users.SingleOrDefault (u => u.UserName == username && u.Password == password);
         if (user == null) return user;
 
+        var roles = _rolesRepository.GetAll ();
+        var role = roles.First (r => r.Id == user.IdRole);
+
         var tokenHandler = new JwtSecurityTokenHandler ();
         var key = System.Text.Encoding.ASCII.GetBytes (_jwtSettings.Secret);
 
@@ -32,7 +37,11 @@ public class UsersService : IUsersService
         {
             Subject = new ClaimsIdentity ( 
                 new Claim [] {
-                        new Claim (ClaimTypes.Name, user.UserName)
+                        new Claim ("UserName", user.UserName),
+                        new Claim ("DisplayName", $"{user.FirstName} {user.LastName}"),
+                        new Claim ("CanRead", user.Canread.Value.ToString ()),
+                        new Claim ("CanWrite", user.Canwrite.Value.ToString ()),
+                        new Claim (ClaimTypes.Role, role.Name)
                 }
             ),
             Expires = DateTime.Now.AddHours(1),
