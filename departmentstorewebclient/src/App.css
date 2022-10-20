@@ -1,0 +1,20 @@
+.App {
+  text-align: center;
+}
+
+.navheader {
+  margin-top: 10px;
+  color: black !important;
+  background-color: #b8c2d8!important;
+}
+
+h1 {
+	text-align: center;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
