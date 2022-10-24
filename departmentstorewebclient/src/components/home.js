@@ -1,10 +1,10 @@
 import React from "react";
 
-const Home = (props) => {
+const Home = () => {
 
     return (
 
-        <img className="center" src="logo512.png" alt="" />
+        <img style={{width: '80%'}} className="center" src="land.jpg" alt="" />
 
     );
 
