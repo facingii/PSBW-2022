@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+
 import { 
     FormGroup,
     Button, 
@@ -12,10 +13,10 @@ import {
 import './login.css';
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Login = (props) => {
+const Login = ({setToken}) => {
 	const location = useLocation ();
 	const navigate = useNavigate ();
-
+	
 	const USERS_ENDPOINT_BASEPATH = process.env.REACT_APP_USERS_ENDPOINT_BASEPATH;
 	const USERS_ENDPOINT_AUTHENTICATE = process.env.REACT_APP_USERS_ENDPOINT_AUTHENTICATE;
     
@@ -29,29 +30,40 @@ const Login = (props) => {
 	); 
 
     const doLogin = () => {
-		debugger;
-		axios.post (USERS_ENDPOINT_BASEPATH + USERS_ENDPOINT_AUTHENTICATE,
-		{
-			"firstName": "",
-			"lastName": "",
-			"userName": estado.UserName,
-			"password": estado.Password,
-			"token": ""
-		},
+		let endpoint = USERS_ENDPOINT_BASEPATH + USERS_ENDPOINT_AUTHENTICATE;
+		let payload = {
+			username: estado.UserName,
+			password: estado.Password
+		};
+
+		axios.post (endpoint, payload,
 		{
 			headers: {
-				'Content-type': 'application/json'
+				'Content-Type': 'application/json; charset=utf-8'
 			}
 		}).then (
 			(response) => {
 				if (response.status === 200) {
 					const json = response.data;
-					localStorage.setItem("ACCESS_TOKEN", json.token);
+					setToken (json.token);
 					navigate (estado.prev);
+				}
+
+				if (response.status === 401 || response.status === 204) {
+					guardarEstado (prevState =>
+						{
+							return (
+								{
+									...prevState,
+									error: true
+								}	
+							)
+						}
+					);
 				}
 			},
 			(error) => {
-				if (error.response.status === 400) {
+				if (error.response.status === 400 || error.response.status === 401) {
 					guardarEstado (prevState =>
 						{
 							return (
@@ -65,7 +77,9 @@ const Login = (props) => {
 				}
 				console.log("Exception " + error);
 			}
-		);
+		).catch (error => {
+			console.log (error);
+		});
 	}
 
 	const handleChange = (e) => {

@@ -18,7 +18,7 @@ class EmployeesManagement extends React.Component {
             searchTerm: '',
             isFetched: false,
             addEmpRedirect: false,
-            token: localStorage.getItem ("ACCESS_TOKEN")
+            token: props.token
         };
         
         this.handle_change = this.handle_change.bind (this);
@@ -32,8 +32,10 @@ class EmployeesManagement extends React.Component {
 
         axios.get (url, {
             headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + this.state.token
+                'Content-type': 'application/json; charset=utf-8',
+                'Authorization': 'Bearer ' + this.state.token,
+                'Access-Control-Allow-Origin': true,
+                'Access-Control-Allow-Credentials': true
             }
         })
         .then ((response) => {
@@ -41,10 +43,10 @@ class EmployeesManagement extends React.Component {
                 this.setState ({ items: response.data, isFetched: true })
             }
         }, (error) => {
-            console.error (error);
+            console.error ("error -> ", error);
         })
         .catch ((ex) => {
-            console.error (ex);
+            console.error ("ERROR: ", ex);
         });
     }
 
@@ -105,21 +107,6 @@ class EmployeesManagement extends React.Component {
                 </Container>
             );
         }
-
-        /*const data = [
-
-            {
-                empNo: 1001,
-                firstName: "Perla Karina",
-                lastName: "Avendaño Trinidad"
-            },
-            {
-                empNo: 1002,
-                firstName: "Grissel Guadalupe",
-                lastName: "Sosa Viveros"
-            }
-
-        ]*/
 
         return (
 
