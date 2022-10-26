@@ -19,8 +19,8 @@ configuration.AddEnvironmentVariables ();
 // add policies
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy ("WritePermission", policy => policy.RequireClaim ("CanWrite", "true"));
-    options.AddPolicy ("ReadPermission", policy => policy.RequireClaim ("CanRead", "true"));
+    options.AddPolicy ("WritePermission", policy => policy.RequireClaim ("CanWrite", "True"));
+    options.AddPolicy ("ReadPermission", policy => policy.RequireClaim ("CanRead", "True"));
 });
 
 //enable Serilog
@@ -76,6 +76,16 @@ builder.Services.AddAuthentication (authOptions =>
     };
 });
 
+builder.Services.AddCors (options =>
+{
+    options.AddPolicy ("MY_CORS", policy =>
+    {
+        policy.AllowAnyOrigin ();
+        policy.AllowAnyMethod ();
+        policy.AllowAnyHeader ();
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen (c =>
@@ -103,6 +113,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors ("MY_CORS");
 
 app.MapControllers();
 

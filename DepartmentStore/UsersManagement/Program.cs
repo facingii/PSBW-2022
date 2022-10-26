@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿    using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +48,16 @@ builder.Services.AddAuthentication (authOptions =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MY_CORS", policy =>
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -63,8 +73,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication ();
+app.UseAuthorization ();
+app.UseCors ("MY_CORS");
 
 app.MapControllers();
 

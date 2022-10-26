@@ -12,8 +12,7 @@
     "Provision": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5258",
+      "applicationUrl": "http://localhost:18272",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

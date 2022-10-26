@@ -11,10 +11,8 @@ namespace EmployeesManagement.Controllers
     {
         private readonly ILogger<EmployeesController> _logger;
         private readonly IEmployeesService _employeesService;
-        private readonly IConfiguration _configuration;
 
-        public EmployeesController (ILogger<EmployeesController> logger, IConfiguration configuration,
-            IEmployeesService employeesService)
+        public EmployeesController (ILogger<EmployeesController> logger, IEmployeesService employeesService)
         {
             _logger = logger;
             _employeesService = employeesService;

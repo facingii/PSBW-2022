@@ -12,8 +12,8 @@
     "EmployeesManagement": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/swagger",
-      "applicationUrl": "http://localhost:28341",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:14758",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ConnectionStrings__EmployeesDBConnection": "server=localhost;port=3306;user=gonzalo;password=12345abc;database=employees",

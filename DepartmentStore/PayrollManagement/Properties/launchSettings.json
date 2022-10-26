@@ -12,8 +12,7 @@
     "PayrollManagement": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5298",
+      "applicationUrl": "http://localhost:30257",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
