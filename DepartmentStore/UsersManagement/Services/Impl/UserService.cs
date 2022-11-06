@@ -24,7 +24,7 @@ public class UsersService : IUsersService
     public User Authenticate (string username, string password)
     {
         var users = _usersRepository.GetAll ();
-        var user = users.SingleOrDefault (u => u.UserName == username && u.Password == password);
+        var user = users.SingleOrDefault (u => u.UserName == username && u.Password == CalculateHash (password));
         if (user == null) return user;
 
         var roles = _rolesRepository.GetAll ();
@@ -64,6 +64,21 @@ public class UsersService : IUsersService
             u.Token = "";
             return u;
         });
+    }
+
+    private string CalculateHash (string plaintText)
+    {
+        using var sha1 = System.Security.Cryptography.SHA1.Create ();
+        var bytes = System.Text.Encoding.UTF8.GetBytes (plaintText);
+        var sb = new System.Text.StringBuilder ();
+
+        var cipherBytes = sha1.ComputeHash (bytes);
+        foreach (var b in cipherBytes)
+        {
+            sb.Append (b.ToString ("x2"));
+        }
+
+        return sb.ToString ();
     }
 }
 
