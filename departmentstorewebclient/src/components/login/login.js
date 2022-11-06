@@ -45,6 +45,18 @@ const Login = ({setToken}) => {
 			(response) => {
 				if (response.status === 200) {
 					const json = response.data;
+
+					if (json.token === '') {
+						guardarEstado (prevState => {
+							return (
+								{
+									...prevState,
+									error: true
+								}
+							)
+						}); 
+					}
+
 					setToken (json.token);
 					navigate (estado.prev);
 				}

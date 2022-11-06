@@ -9,7 +9,6 @@ import UsersManagement from './components/users/UsersManagement';
 import Login from './components/login/login';
 
 import {
-	BrowserRouter,
 	Link,
     Routes,
 	Route,
@@ -18,9 +17,12 @@ import {
 
 import { Container, Navbar, NavItem } from 'reactstrap';
 
+import { useIdleTimer } from 'react-idle-timer';
+
 function MyApp (props) {
     const [token, setToken] = useState ('');
-
+    useIdleTimer ({onIdle, onActive, timeout: 1000 * 60 * 1});
+        
     // necessary hack due to new version of rect-router doesn't pass
     // url params as props 
     const Wrapper = (props) => {
@@ -31,13 +33,20 @@ function MyApp (props) {
         )
     }
 
+    function onActive (e) {}
+
+    function onIdle (e) {
+        console.log("User is idle");
+        logout ();
+    }
+
     function logout () { 
         setToken ('');
-        window.location.href = '/';
+        window.location.reload (false);
     }
 
     return (
-        <BrowserRouter>
+        <React.Fragment>
             <Container style={{maxWidth: '100%'}} >
                 <Navbar expand="lg" className="navheader">
                     <div className="collapse navbar-collapse">
@@ -62,15 +71,14 @@ function MyApp (props) {
             </Container>
             <br />
             <Routes>
-                <Route exact path='/' element={<Home />} />
+                <Route path='/' element={<Home />} />
                 <Route exact path='/employeesManagement' element={<EmployeesManagement token={token} />} />
                 <Route exact path='/addEmployee' element={<AddEmployee token={token} replace to='employeesManagement' />} />
                 <Route exact path='/edit/:id' element={<Wrapper token={token} />} replace to='employeesManagement' />
                 <Route exact path='/usersManagement' element={<UsersManagement />} />
                 <Route exact path='/login' element={<Login setToken={setToken} />} />
             </Routes>
-        </BrowserRouter>
-
+        </React.Fragment>
     );
 
 }

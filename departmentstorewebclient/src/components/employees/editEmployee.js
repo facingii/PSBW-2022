@@ -1,5 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { Navigate } from "react-router-dom";
 
@@ -14,29 +15,65 @@ import {
     Alert
 } from "reactstrap";
 
-function EditEmployee ({token}) {
+function EditEmployee (props) {
     const location = useLocation ();
     const navigate = useNavigate ();
-    
+    const params = useParams ();
+
     const [fields, updateFields] = useState (
         {
+            empNo: '',
             firstName: '',
             lastName: '',
             birthDate: '',
             hireDate: '',
+            token: props.token
         }
     );
-
-    const [states, updateStates] = useState (
+    
+    const [state, updateState] = useState (
         {
             isSubmitted: false,
             error: false
         }
     );
 
+    const editEndpoint = process.env.REACT_APP_EMPLOYEES_ENDPOINT_BASEPATH;
+    const editTemplate = process.env.REACT_APP_EMPLOYEES_ENDPOINT_GET_ALL; 
+
     useEffect (() => {
-        //fetch data
-    }, []);
+        
+        let url = editEndpoint + editTemplate + "/" + params.id
+
+        axios.get (url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + props.token
+            }
+        })
+        .then (response => {
+            if (response.status === 200) {
+                updateFields (
+                    {
+                        empNo: response.data.empNo,
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                        birthDate: response.data.birthDate.substr (0, 10),
+                        hireDate: response.data.hireDate.substr (0, 10)
+                    }
+                )
+            } else {
+                updateState (
+                    {
+                        error: true
+                    }
+                )
+            }
+        });
+
+
+    }, [params, editEndpoint, editTemplate, props.token]);
     
     function handleChange (e) {
         updateFields (
@@ -47,7 +84,7 @@ function EditEmployee ({token}) {
     }
 
     function add (e) {
-        //put data
+        
     }
 
     function cancel (e) {
@@ -55,7 +92,7 @@ function EditEmployee ({token}) {
     }
 
 
-    if (token === '') {
+    if (fields.token === '') {
         return (
             <Navigate to = '/login' state={{from: location.pathname}} />
         )
@@ -65,11 +102,11 @@ function EditEmployee ({token}) {
         <Container className="App">
                 <h4 className="PageHeading">Enter employee infomation</h4>
                 <Alert 
-                    isOpen={states.isSubmitted} 
-                    color={!states.error ? "success" : "warning"}
-                    toggle={() => updateStates ({ isSubmitted: false })}
+                    isOpen={state.isSubmitted} 
+                    color={!state.error ? "success" : "warning"}
+                    toggle={() => updateState ({ isSubmitted: false })}
                 >
-                    {!states.error ? "Information was saved!" : "An error occurs while trying to update information"}
+                    {!state.error ? "Information was saved!" : "An error occurs while trying to update information"}
                 </Alert>
                 <Form className="form">
                     <Col>
