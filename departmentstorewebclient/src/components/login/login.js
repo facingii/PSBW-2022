@@ -87,10 +87,11 @@ const Login = ({setToken}) => {
 						}
 					);
 				}
-				console.log("Exception " + error);
+				
+				//console.log("Exception " + error);
 			}
 		).catch (error => {
-			console.log (error);
+			//console.log (error);
 		});
 	}
 

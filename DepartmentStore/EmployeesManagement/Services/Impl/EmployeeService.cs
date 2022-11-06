@@ -33,15 +33,15 @@ namespace EmployeesManagement.Services.Impl
         public bool SaveEmployee (Employee employee)
         {
             // validate required relations
-            if (!employee.DeptEmps.Any () || !employee.Titles.Any () || !employee.Salaries.Any ())
-                return false;
+            //if (!employee.DeptEmps.Any () || !employee.Titles.Any () || !employee.Salaries.Any ())
+            //    return false;
 
             return true; //_employeesRepository.Save (employee);
         }
 
         public bool UpdateEmployee (int empNo, Employee employee)
         {
-            throw new NotImplementedException ();
+            return _employeesRepository.Update (empNo, employee);
         }
 
         public bool DeleteEmployee (int empNo)

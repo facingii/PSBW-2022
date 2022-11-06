@@ -25,14 +25,15 @@ function EditEmployee (props) {
             empNo: '',
             firstName: '',
             lastName: '',
+            gender: '',
             birthDate: '',
-            hireDate: '',
-            token: props.token
+            hireDate: ''
         }
     );
     
     const [state, updateState] = useState (
         {
+            token: props.token,
             isSubmitted: false,
             error: false
         }
@@ -78,13 +79,51 @@ function EditEmployee (props) {
     function handleChange (e) {
         updateFields (
             {
-                [e.name]: e.value
+                ...fields,
+                [e.target.name]: e.target.value
             }
         );
     }
 
     function add (e) {
+        let url = editEndpoint + editTemplate + "/" + params.id
+
+        let data = {
+            firstName: fields.firstName,
+            lastName: fields.lastName,
+            gender: 'F',
+            birthDate: fields.birthDate,
+            hireDate: fields.hireDate
+        }
         
+        axios.put (url, JSON.stringify (data), {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + state.token
+            }
+        })
+        .then (response => {
+            if (response.status === 200) {
+                updateState (
+                    {
+                        isSubmitted: true
+                    }
+                );
+
+                return;
+            }
+
+            updateState (
+                {
+                    error: true,
+                }
+            );
+        }).catch (reason => {
+            updateState ({
+                error: true
+            })
+        })
     }
 
     function cancel (e) {

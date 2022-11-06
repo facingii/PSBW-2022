@@ -87,7 +87,23 @@ namespace EmployeesManagement.Controllers
         [ProducesResponseType (StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateEmployee (int empNo, [FromBody] Employee employee)
         {
-            return null;
+            try
+            {
+                var updated = _employeesService.UpdateEmployee (empNo, employee);
+
+                if (!updated)
+                    return BadRequest ("Some information is wrong!");
+
+                return Ok ();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error was raised in {nameof (EmployeesController)}.{nameof (UpdateEmployee)} method. " +
+                    $"Error message {ex.Message}",
+                    new object[] { $"EmpNo={empNo}", $"Payload={JsonSerializer.Serialize(employee)}" });
+
+                throw;
+            }
         }
 
     }

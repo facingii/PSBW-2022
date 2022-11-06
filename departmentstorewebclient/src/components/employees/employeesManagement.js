@@ -43,10 +43,10 @@ class EmployeesManagement extends React.Component {
                 this.setState ({ items: response.data, isFetched: true })
             }
         }, (error) => {
-            console.error ("error -> ", error);
+            //console.error ("error -> ", error);
         })
         .catch ((ex) => {
-            console.error ("ERROR: ", ex);
+            //console.error ("ERROR: ", ex);
         });
     }
 
